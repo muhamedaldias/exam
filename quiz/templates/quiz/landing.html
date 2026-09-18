@@ -1,6 +1,6 @@
 {% extends 'quiz/base.html' %}
 
-{% block title %}Welcome - Online Quiz Assessment{% endblock %}
+{% block title %}{{ T.landing_title }}{% endblock %}
 
 {% block content %}
 <div class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
@@ -14,7 +14,7 @@
                 </div>
                 <a href="{% url 'accounts:login' %}" class="flex items-center space-x-2 text-gray-600 hover:text-blue-600 transition">
                     <i data-lucide="shield-check" class="w-5 h-5"></i>
-                    <span>Teacher Login</span>
+                    <span>{{ T.teacher_login }}</span>
                 </a>
             </div>
         </div>
@@ -32,12 +32,12 @@
             
             <!-- Title -->
             <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-                Welcome to Online Quiz
+                {{ T.hero_title }}
             </h2>
             <p class="text-xl text-gray-600 mb-12">
-                Enter your quiz code to begin your assessment
+                {{ T.hero_sub }}
             </p>
-            <p class="text-xs text-gray-400">Open source core • Pro plans available from the maintainer</p>
+            <p class="text-xs text-gray-400">{{ T.tagline }}</p>
 
             <!-- Quiz Code Entry Form -->
             <div class="bg-white rounded-2xl shadow-xl p-8 md:p-12" data-aos="fade-up" data-aos-delay="200">
@@ -45,20 +45,21 @@
                     <div class="mb-6">
                         <label for="quiz_code" class="block text-left text-sm font-semibold text-gray-700 mb-2">
                             <i data-lucide="key" class="w-4 h-4 inline mr-1"></i>
-                            Quiz Code
+                            {{ T.code_label }}
                         </label>
                         <input 
                             type="text" 
                             id="quiz_code" 
                             name="quiz_code"
-                            placeholder="e.g., QZ-ABC123"
+                            placeholder="{{ T.code_placeholder }}"
+                            dir="ltr"
                             maxlength="10"
                             required
                             oninput="this.value = this.value.toUpperCase()"
                             class="w-full px-6 py-4 text-center text-2xl font-mono uppercase tracking-wider border-2 border-gray-300 rounded-xl focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition"
                         >
                         <p class="text-sm text-gray-500 mt-2 text-left">
-                            Format: QZ-XXXXXX (e.g., QZ-ABC123)
+                            {{ T.code_hint }}
                         </p>
                     </div>
 
@@ -67,8 +68,8 @@
                         id="submitBtn"
                         class="w-full py-4 px-6 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl shadow-lg transition transform hover:scale-105 flex items-center justify-center space-x-2"
                     >
-                        <span id="btnText">Continue to Quiz</span>
-                        <i data-lucide="arrow-right" class="w-5 h-5" id="btnIcon"></i>
+                        <span id="btnText">{{ T.continue_btn }}</span>
+                        <i data-lucide="arrow-right" class="w-5 h-5 rtl:rotate-180" id="btnIcon"></i>
                     </button>
                 </form>
             </div>
@@ -86,7 +87,7 @@
                         btn.disabled = true;
                         btn.classList.remove('hover:bg-blue-700', 'hover:scale-105');
                         btn.classList.add('bg-gray-400', 'cursor-not-allowed');
-                        btnText.textContent = 'Loading...';
+                        btnText.textContent = '{{ T.loading }}';
                         btnIcon.style.display = 'none';
                         
                         // Redirect to the quiz entry page
@@ -100,7 +101,7 @@
             <div class="mt-8 text-sm text-gray-500" data-aos="fade-up" data-aos-delay="400">
                 <p class="flex items-center justify-center space-x-2">
                     <i data-lucide="info" class="w-4 h-4"></i>
-                    <span>Don't have a quiz code? Contact your teacher</span>
+                    <span>{{ T.help_text }}</span>
                 </p>
             </div>
         </div>
@@ -111,24 +112,24 @@
                 <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                     <i data-lucide="clock" class="w-8 h-8 text-green-600"></i>
                 </div>
-                <h3 class="font-semibold text-gray-800 mb-2">Timed Quizzes</h3>
-                <p class="text-sm text-gray-600">Auto-submission when time expires</p>
+                <h3 class="font-semibold text-gray-800 mb-2">{{ T.f1t }}</h3>
+                <p class="text-sm text-gray-600">{{ T.f1d }}</p>
             </div>
             
             <div class="text-center p-6" data-aos="fade-up" data-aos-delay="200">
                 <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
                     <i data-lucide="shield" class="w-8 h-8 text-purple-600"></i>
                 </div>
-                <h3 class="font-semibold text-gray-800 mb-2">Secure & Fair</h3>
-                <p class="text-sm text-gray-600">Anti-cheat monitoring enabled</p>
+                <h3 class="font-semibold text-gray-800 mb-2">{{ T.f2t }}</h3>
+                <p class="text-sm text-gray-600">{{ T.f2d }}</p>
             </div>
             
             <div class="text-center p-6" data-aos="fade-up" data-aos-delay="300">
                 <div class="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
                     <i data-lucide="zap" class="w-8 h-8 text-orange-600"></i>
                 </div>
-                <h3 class="font-semibold text-gray-800 mb-2">Instant Results</h3>
-                <p class="text-sm text-gray-600">See your score immediately</p>
+                <h3 class="font-semibold text-gray-800 mb-2">{{ T.f3t }}</h3>
+                <p class="text-sm text-gray-600">{{ T.f3d }}</p>
             </div>
         </div>
     </div>
@@ -136,7 +137,7 @@
     <!-- Footer -->
     <footer class="bg-white border-t border-gray-200 mt-20">
         <div class="container mx-auto px-4 py-6 text-center text-gray-600 text-sm">
-            <p>&copy; 2026 OQA System. All rights reserved.</p>
+            <p>&copy; 2026 {{ T.site_name }}. {{ T.rights }}</p>
         </div>
     </footer>
 </div>

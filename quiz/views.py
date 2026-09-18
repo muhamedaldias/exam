@@ -8,11 +8,21 @@ from django.utils import timezone
 from django.db import IntegrityError
 from .models import Quiz, Question, QuestionGroup, StudentSession, Answer, SuspiciousEvent
 from .forms import QuizForm, QuestionGroupForm, QuestionForm, StudentEntryForm
+from .lang import t
 from .utils.selection import select_questions_for_session, compute_max_score
 
 
 def landing(request):
     return render(request, 'quiz/landing.html')
+
+
+def set_language(request, code):
+    if code in ('ar', 'en'):
+        request.session['lang'] = code
+    target = request.GET.get('next', '')
+    if not target.startswith('/'):
+        target = '/'
+    return redirect(target)
 
 
 def quiz_entry(request, quiz_code):
@@ -39,7 +49,7 @@ def start_quiz(request, quiz_code):
             for e in errs:
                 messages.error(request, e)
         if not accept_rules:
-            messages.error(request, 'You must accept the rules to continue.')
+            messages.error(request, t(request, 'msg_accept_rules'))
         return redirect('quiz:quiz_entry', quiz_code=quiz_code)
     
     full_name = form.cleaned_data['full_name'].strip()
@@ -49,7 +59,7 @@ def start_quiz(request, quiz_code):
     # Safeguard: ensure quiz has questions
     total_questions = quiz.questions.count()
     if total_questions == 0:
-        messages.error(request, 'This quiz has no questions yet. Please contact your teacher.')
+        messages.error(request, t(request, 'msg_no_questions'))
         return redirect('quiz:quiz_entry', quiz_code=quiz_code)
     
     try:
@@ -69,7 +79,7 @@ def start_quiz(request, quiz_code):
         
         if not selected:
             session.delete()
-            messages.error(request, 'No questions available for this quiz.')
+            messages.error(request, t(request, 'msg_no_questions2'))
             return redirect('quiz:quiz_entry', quiz_code=quiz_code)
         
         max_score = compute_max_score(selected)
@@ -84,10 +94,10 @@ def start_quiz(request, quiz_code):
         
     except IntegrityError:
         # student already took this quiz
-        messages.error(request, f'Registration number {reg_number} has already taken this quiz. You cannot retake it.')
+        messages.error(request, t(request, 'msg_duplicate', reg=reg_number))
         return redirect('quiz:quiz_entry', quiz_code=quiz_code)
     except Exception as e:
-        messages.error(request, f'Error starting quiz: {str(e)}')
+        messages.error(request, t(request, 'msg_error', err=str(e)))
         return redirect('quiz:quiz_entry', quiz_code=quiz_code)
 
 

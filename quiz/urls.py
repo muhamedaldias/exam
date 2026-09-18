@@ -5,6 +5,8 @@ app_name = 'quiz'
 # Pro users can mount additional API routes here (advanced monitoring)
 
 urlpatterns = [
+    # Language switcher
+    path('lang/<str:code>/', views.set_language, name='set_language'),
     # Landing and student quiz access
     path('', views.landing, name='landing'),
     path('<str:quiz_code>/', views.quiz_entry, name='quiz_entry'),

@@ -1,6 +1,6 @@
 {% extends 'quiz/base.html' %}
 
-{% block title %}Quiz in Progress - {{ session.quiz.title }}{% endblock %}
+{% block title %}{{ T.attempt_title }} - {{ session.quiz.title }}{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -49,7 +49,7 @@
                         class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg transition flex items-center space-x-2"
                     >
                         <i data-lucide="send" class="w-4 h-4"></i>
-                        <span class="hidden md:inline">Submit</span>
+                        <span class="hidden md:inline">{{ T.submit }}</span>
                     </button>
                 </div>
             </div>
@@ -66,10 +66,10 @@
                         <!-- Question Header -->
                         <div class="flex items-center justify-between mb-6 pb-4 border-b-2 border-gray-100">
                             <h2 class="text-lg font-semibold text-gray-700">
-                                Question <span x-text="currentQuestion + 1"></span> of <span x-text="questions.length"></span>
+                                {{ T.question }} <span x-text="currentQuestion + 1"></span> {{ T.of }} <span x-text="questions.length"></span>
                             </h2>
                             <span class="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-sm font-semibold">
-                                <span x-text="questions[currentQuestion]?.marks"></span> marks
+                                <span x-text="questions[currentQuestion]?.marks"></span> {{ T.marks }}
                             </span>
                         </div>
 
@@ -80,7 +80,7 @@
 
                         <!-- Options -->
                         <div class="space-y-3">
-                            <template x-for="(option, idx) in questions[currentQuestion]?.options" :key="idx">
+                            <template x-for="(option, idx) in questions[currentQuestion]?.options" :key="currentQuestion + '-' + option.key">
                                 <label 
                                     class="flex items-start space-x-4 p-4 border-2 rounded-xl cursor-pointer transition"
                                     :class="answers[currentQuestion] === option.key ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'"
@@ -110,8 +110,8 @@
                                 :disabled="currentQuestion === 0"
                                 class="px-6 py-3 bg-gray-200 hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed text-gray-700 font-semibold rounded-lg transition flex items-center space-x-2"
                             >
-                                <i data-lucide="chevron-left" class="w-5 h-5"></i>
-                                <span>Previous</span>
+                                <i data-lucide="chevron-left" class="w-5 h-5 rtl:rotate-180"></i>
+                                <span>{{ T.previous }}</span>
                             </button>
                             
                             <button 
@@ -119,8 +119,8 @@
                                 :disabled="currentQuestion === questions.length - 1"
                                 class="px-6 py-3 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold rounded-lg transition flex items-center space-x-2"
                             >
-                                <span>Next</span>
-                                <i data-lucide="chevron-right" class="w-5 h-5"></i>
+                                <span>{{ T.next }}</span>
+                                <i data-lucide="chevron-right" class="w-5 h-5 rtl:rotate-180"></i>
                             </button>
                         </div>
                     </div>
@@ -132,7 +132,7 @@
                     <div class="bg-white rounded-2xl shadow-lg p-6 sticky top-24">
                         <h3 class="font-semibold text-gray-800 mb-4 flex items-center">
                             <i data-lucide="grid-3x3" class="w-5 h-5 mr-2 text-blue-600"></i>
-                            Questions
+                            {{ T.questions_nav }}
                         </h3>
                         
                         <div class="grid grid-cols-5 gap-2">
@@ -154,22 +154,22 @@
                         <div class="mt-6 space-y-2 text-sm">
                             <div class="flex items-center space-x-2">
                                 <div class="w-4 h-4 bg-green-100 border-2 border-green-300 rounded"></div>
-                                <span class="text-gray-600">Answered</span>
+                                <span class="text-gray-600">{{ T.answered }}</span>
                             </div>
                             <div class="flex items-center space-x-2">
                                 <div class="w-4 h-4 bg-gray-100 border-2 border-gray-300 rounded"></div>
-                                <span class="text-gray-600">Not Answered</span>
+                                <span class="text-gray-600">{{ T.not_answered }}</span>
                             </div>
                             <div class="flex items-center space-x-2">
                                 <div class="w-4 h-4 bg-blue-600 rounded"></div>
-                                <span class="text-gray-600">Current</span>
+                                <span class="text-gray-600">{{ T.current }}</span>
                             </div>
                         </div>
 
                         <!-- Progress -->
                         <div class="mt-6 pt-6 border-t border-gray-200">
                             <div class="flex items-center justify-between text-sm text-gray-600 mb-2">
-                                <span>Progress</span>
+                                <span>{{ T.progress }}</span>
                                 <span x-text="Math.round((Object.keys(answers).length / questions.length) * 100) + '%'"></span>
                             </div>
                             <div class="w-full bg-gray-200 rounded-full h-2">
@@ -196,16 +196,16 @@
                 <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
                     <i data-lucide="alert-triangle" class="w-6 h-6 text-red-600"></i>
                 </div>
-                <h3 class="text-xl font-bold text-gray-800">Warning!</h3>
+                <h3 class="text-xl font-bold text-gray-800">{{ T.warn_title }}</h3>
             </div>
             <p class="text-gray-600 mb-6">
-                Tab switching or window blur has been detected and logged. Multiple violations may result in quiz invalidation.
+                {{ T.warn_text }}
             </p>
             <button 
                 @click="showWarning = false"
                 class="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg"
             >
-                I Understand
+                {{ T.warn_ok }}
             </button>
         </div>
     </div>
@@ -220,27 +220,26 @@
                 <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
                     <i data-lucide="help-circle" class="w-6 h-6 text-blue-600"></i>
                 </div>
-                <h3 class="text-xl font-bold text-gray-800">Submit Quiz?</h3>
+                <h3 class="text-xl font-bold text-gray-800">{{ T.submit_title }}</h3>
             </div>
             <p class="text-gray-600 mb-2">
-                You have answered <strong x-text="Object.keys(answers).length"></strong> out of <strong x-text="questions.length"></strong> questions.
+                {{ T.submit_count_a }} <strong x-text="Object.keys(answers).length"></strong> {{ T.submit_count_b }} <strong x-text="questions.length"></strong> {{ T.submit_count_c }}
             </p>
             <p class="text-gray-600 mb-6">
-                Are you sure you want to submit? This action cannot be undone.
+                {{ T.submit_text }}
             </p>
             <div class="flex space-x-3">
                 <button 
                     @click="showSubmitModal = false"
                     class="flex-1 py-3 bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold rounded-lg"
                 >
-                    Cancel
+                    {{ T.cancel }}
                 </button>
                 <button 
                     @click="confirmSubmit()"
                     class="flex-1 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg"
                 >
-                    Submit
-                </button>
+                    {{ T.submit_btn }}
             </div>
         </div>
     </div>
@@ -262,6 +261,11 @@ function getCookie(name) {
     return cookieValue;
 }
 const csrftoken = getCookie('csrftoken');
+const T = {
+    errLoad: "{{ T.err_load|escapejs }}",
+    errFailed: "{{ T.err_failed|escapejs }}",
+    timeUp: "{{ T.time_up|escapejs }}"
+};
 
 function quizApp() {
     return {
@@ -306,11 +310,11 @@ function quizApp() {
                     this.loading = false;
                     console.log('Questions loaded:', this.questions.length);
                 } else {
-                    alert('Error loading questions');
+                    alert(T.errLoad);
                 }
             } catch (error) {
                 console.error('Failed to load questions:', error);
-                alert('Failed to load quiz. Please refresh page.');
+                alert(T.errFailed);
             }
         },
         
@@ -435,7 +439,7 @@ function quizApp() {
         autoSubmit() {
             clearInterval(this.timerInterval);
             clearInterval(this.heartbeatInterval);
-            alert('Time is up! Quiz will be auto-submitted.');
+            alert(T.timeUp);
             window.location.href = `/session/${this.sessionId}/result/`;
         },
         

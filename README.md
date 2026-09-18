@@ -22,6 +22,7 @@ No student accounts required. Students enter via a short code + basic details.
 - **Results & CSV export** — detailed per-student results with answer breakdown for auto-submitted sessions.
 - **Choice & question order randomization** per student.
 - **No student login friction** — just name + reg # + email. Duplicate attempt prevention via unique (quiz + reg#).
+- **Bilingual Support (English & Arabic)** — Full RTL layout support, session-based instant language toggle for student interfaces, and zero-toolchain localization.
 - Modern responsive UI powered by Tailwind CDN + Alpine.js + Lucide (no build step).
 
 ### Architecture at a Glance
@@ -173,11 +174,11 @@ This system raises the cost of casual cheating. Determined remote cheating (phon
 
 **Pro version** adds deeper analytics and optional webcam/proctoring hooks.
 
-I should insert this in a good place, perhaps after features.
+## 📖 التوثيق باللغة العربية (Arabic Documentation)
 
-To make it attractive, place it under a new section.
-
-Since search_replace needs exact match, find a good insertion point.
+يوفر المشروع توثيقاً متكاملاً وتفصيلياً باللغة العربية:
+- **[التوثيق الشامل لملفات المشروع](docs/ar/comprehensive-project-files.md)** — تحليل تفصيلي ملف بملف لكل جزء في النظام، بنيته، ودوره.
+- **[شرح نظام الاختبارات الإلكتروني بالعمق](docs/ar/system-deep-dive.md)** — دراسة معمارية النظام، آليات منع الغش، وجداول الدرجات والتقييم.
 
 ## License
 

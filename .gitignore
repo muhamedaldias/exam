@@ -46,3 +46,15 @@ htmlcov/
 *.tmp
 *.orig
 *.log.*
+*.err
+
+# Executables & Binaries
+*.exe
+cloudflared.exe
+
+# Local dependencies & environments
+wheels/
+
+# IDE & workspace artifacts
+.codegraph/
+.omo/
