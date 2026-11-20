@@ -1,5 +1,5 @@
 Django==6.0.8
 python-decouple==3.8
-gunicorn==26.0.0
+gunicorn==27.0.1
 mysqlclient
 # psycopg2-binary for Postgres deployments
